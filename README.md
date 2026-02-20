@@ -86,3 +86,4 @@ matches:
 
 MIT
 # autokey2espanso
+# autokey2espanso
