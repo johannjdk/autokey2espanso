@@ -1,0 +1,13 @@
+[project]
+name = "autokey2espanso"
+version = "1.0.0"
+description = "Convert AutoKey phrase entries to Espanso YAML format"
+authors = [
+    {name = "Johann Judek"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+
+[project.scripts]
+autokey2espanso = "autokey2espanso.cli:main"
