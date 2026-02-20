@@ -13,7 +13,7 @@ def verbose_print(enabled, message):
         print(f"[{timestamp}] {message}", file=sys.stderr)
 
 
-def collect_entries(directory: Path, verbose: bool):
+def collect_entries(directory: Path, verbose: bool, prefix: str):
     entries = []
     json_files = sorted(directory.glob("*.json"))
 
@@ -44,8 +44,9 @@ def collect_entries(directory: Path, verbose: bool):
             verbose_print(verbose, f"Skipping '{base_name}': no abbreviation found")
             continue
 
-        trigger_raw = abbreviations[0]
-        trigger = trigger_raw if trigger_raw.startswith(":") else f":{trigger_raw}"
+        trigger = abbreviations[0]
+        if prefix:
+            trigger = f"{prefix}{trigger}"
 
         try:
             with txt_file.open("r", encoding="utf-8") as tf:
@@ -83,6 +84,9 @@ def main():
     parser.add_argument(
         "-w", "--wordmode", action="store_true", help="Add 'word: true' to each entry"
     )
+    parser.add_argument(
+        "-p", "--prefix", help="Custom prefix to add to triggers", default=""
+    )
     args = parser.parse_args()
 
     directory = Path(args.directory)
@@ -91,7 +95,7 @@ def main():
         print("Error: Invalid directory", file=sys.stderr)
         sys.exit(1)
 
-    entries = collect_entries(directory, args.verbose)
+    entries = collect_entries(directory, args.verbose, args.prefix)
     yaml_output = generate_yaml(entries, wordmode=args.wordmode)
 
     if args.output:
