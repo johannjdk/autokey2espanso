@@ -54,6 +54,20 @@ Verbose mode:
 autokey2espanso /path/to/autokey/phrases -o espanso.yml -v
 ```
 
+Word mode (`-w / --wordmode`):
+
+```bash
+autokey2espanso /path/to/autokey/phrases -o espanso.yml -w
+```
+
+When enabled, each entry will include:
+
+```yaml
+word: true
+```
+
+This is useful for triggers that should only match entire words in Espanso.
+
 ---
 
 ## How it works
@@ -76,6 +90,16 @@ Becomes:
 ```yaml
 matches:
   - trigger: ":hello"
+    replace: |
+      Hello World!
+```
+
+If word mode is enabled:
+
+```yaml
+matches:
+  - trigger: ":hello"
+    word: true
     replace: |
       Hello World!
 ```
