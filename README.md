@@ -12,7 +12,7 @@ It reads matching `.json` and `.txt` pairs and generates a valid Espanso `matche
 
 ## Requirements
 
-- Python 3.8+
+* Python 3.8+
 
 ---
 
@@ -24,7 +24,7 @@ Clone the repository:
 git clone https://github.com/yourname/autokey2espanso.git
 cd autokey2espanso
 pip install .
-````
+```
 
 Or run directly:
 
@@ -60,7 +60,16 @@ Word mode (`-w / --wordmode`):
 autokey2espanso /path/to/autokey/phrases -o espanso.yml -w
 ```
 
-When enabled, each entry will include:
+Custom prefix (`-p / --prefix`):
+
+```bash
+autokey2espanso /path/to/autokey/phrases -p ":" -o espanso.yml
+```
+
+When enabled, the prefix will be added before each trigger.
+If omitted, triggers are taken **1:1** from AutoKey.
+
+When word mode is enabled, each entry will include:
 
 ```yaml
 word: true
@@ -79,17 +88,26 @@ Example.json
 Example.txt
 ```
 
-The first abbreviation inside the JSON file becomes the Espanso trigger:
+The first abbreviation inside the JSON file becomes the Espanso trigger. With optional prefix:
 
 ```json
 "abbreviations": ["hello"]
 ```
 
-Becomes:
+Becomes with `-p ":"`:
 
 ```yaml
 matches:
   - trigger: ":hello"
+    replace: |
+      Hello World!
+```
+
+Or 1:1 (no prefix):
+
+```yaml
+matches:
+  - trigger: "hello"
     replace: |
       Hello World!
 ```
