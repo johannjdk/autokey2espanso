@@ -61,10 +61,12 @@ def collect_entries(directory: Path, verbose: bool):
     return entries
 
 
-def generate_yaml(entries):
+def generate_yaml(entries, wordmode=False):
     lines = ["matches:"]
     for trigger, content in entries:
         lines.append(f"  - trigger: \"{trigger}\"")
+        if wordmode:
+            lines.append("    word: true")
         lines.append("    replace: |")
         for line in content.splitlines():
             lines.append(f"      {line}")
@@ -78,6 +80,9 @@ def main():
     parser.add_argument("directory", help="Directory containing AutoKey entries")
     parser.add_argument("-o", "--output", help="Output file path")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose mode")
+    parser.add_argument(
+        "-w", "--wordmode", action="store_true", help="Add 'word: true' to each entry"
+    )
     args = parser.parse_args()
 
     directory = Path(args.directory)
@@ -87,7 +92,7 @@ def main():
         sys.exit(1)
 
     entries = collect_entries(directory, args.verbose)
-    yaml_output = generate_yaml(entries)
+    yaml_output = generate_yaml(entries, wordmode=args.wordmode)
 
     if args.output:
         output_path = Path(args.output)
