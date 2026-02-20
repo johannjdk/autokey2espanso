@@ -85,5 +85,3 @@ matches:
 ## License
 
 MIT
-# autokey2espanso
-# autokey2espanso
