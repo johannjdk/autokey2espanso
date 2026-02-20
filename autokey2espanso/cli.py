@@ -68,7 +68,7 @@ def generate_yaml(entries, wordmode=False):
         lines.append(f"  - trigger: \"{trigger}\"")
         if wordmode:
             lines.append("    word: true")
-        lines.append("    replace: |")
+        lines.append("    replace: |-")
         for line in content.splitlines():
             lines.append(f"      {line}")
     return "\n".join(lines) + "\n"
