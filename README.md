@@ -21,7 +21,7 @@ It reads matching `.json` and `.txt` pairs and generates a valid Espanso `matche
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourname/autokey2espanso.git
+git clone https://github.com/johannjdk/autokey2espanso.git
 cd autokey2espanso
 pip install .
 ```
