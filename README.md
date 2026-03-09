@@ -18,7 +18,13 @@ It reads matching `.json` and `.txt` pairs and generates a valid Espanso `matche
 
 ## Installation
 
-Clone the repository:
+Install with pip
+
+```bash
+pip install autokey2espanso
+```
+
+Or clone the repository:
 
 ```bash
 git clone https://github.com/johannjdk/autokey2espanso.git
