@@ -15,16 +15,31 @@ def verbose_print(enabled, message):
 
 def collect_entries(directory: Path, verbose: bool, prefix: str):
     entries = []
-    json_files = sorted(directory.glob("*.json"))
+    json_files = sorted(
+        f for f in directory.glob("*.json")
+    ) + sorted(
+        f for f in directory.glob(".*.json")
+    )
+    json_files = sorted(list(set(json_files)))
 
     verbose_print(verbose, f"Scanning directory: {directory}")
     verbose_print(verbose, f"Found {len(json_files)} JSON files")
 
     for json_file in json_files:
-        base_name = json_file.stem
-        txt_file = directory / f"{base_name}.txt"
+        filename = json_file.name
+        if filename.startswith("."):
+            base_name = filename[1:-5]
+        else:
+            base_name = json_file.stem
 
-        if not txt_file.exists():
+        txt_file = directory / f"{base_name}.txt"
+        hidden_txt_file = directory / f".{base_name}.txt"
+
+        if txt_file.exists():
+            target_txt = txt_file
+        elif hidden_txt_file.exists():
+            target_txt = hidden_txt_file
+        else:
             verbose_print(verbose, f"Skipping '{base_name}': missing .txt file")
             continue
 
@@ -49,7 +64,7 @@ def collect_entries(directory: Path, verbose: bool, prefix: str):
             trigger = f"{prefix}{trigger}"
 
         try:
-            with txt_file.open("r", encoding="utf-8") as tf:
+            with target_txt.open("r", encoding="utf-8") as tf:
                 content = tf.read().rstrip()
         except Exception as e:
             verbose_print(verbose, f"Skipping '{base_name}': TXT read error ({e})")
@@ -65,7 +80,7 @@ def collect_entries(directory: Path, verbose: bool, prefix: str):
 def generate_yaml(entries, wordmode=False):
     lines = ["matches:"]
     for trigger, content in entries:
-        lines.append(f"  - trigger: \"{trigger}\"")
+        lines.append(f'  - trigger: "{trigger}"')
         if wordmode:
             lines.append("    word: true")
         lines.append("    replace: |-")

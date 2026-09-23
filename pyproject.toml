@@ -1,6 +1,6 @@
 [project]
 name = "autokey2espanso"
-version = "1.0.2"
+version = "1.1.0"
 description = "Convert AutoKey phrase entries to Espanso YAML format"
 authors = [
     {name = "Johann Judek"}
